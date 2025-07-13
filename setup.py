@@ -9,7 +9,7 @@ env = os.environ.get('source')
 
 
 def get_dependencies():
-    dependency = []
+    dependency = ["bcrypt==4.3.0", "PyJWT==2.10.1"]
 
     if env and env == "code":
         return dependency
