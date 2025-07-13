@@ -15,3 +15,7 @@ class MWebAuthConfig:
     # Messages
     NOT_AUTHORIZED_MSG = "You are not authorized to access this resource"
     AUTHENTICATION_FAILED_MSG = "Authentication Failed"
+
+    # Configuration
+    SKIP_EXACT_URLS_FROM_AUTH: list = []
+    SKIP_PREFIXES_URL_FROM_AUTH: list = []

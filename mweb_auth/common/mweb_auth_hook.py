@@ -1,4 +1,5 @@
 from typing import Type, TypeVar, cast
+from mweb_auth.connect.mweb_auth_base_interceptor import MWebAuthBaseInterceptor
 from mweb_auth.connect.mweb_auth_connector import MWebAuthSkipURLChecker, MWebAuthRestAclInterceptor
 
 T = TypeVar('T')
@@ -7,6 +8,7 @@ T = TypeVar('T')
 class MWebAuthHook:
     AUTH_SKIP_URL_CHECKER: MWebAuthSkipURLChecker = None
     AUTH_REST_ACL_INTERCEPTOR: MWebAuthRestAclInterceptor = None
+    AUTH_INTERCEPTOR: MWebAuthBaseInterceptor = None
 
     @classmethod
     def get_hook(cls, hook_name: str, hook_type: Type[T], default=None) -> T | None:
@@ -23,3 +25,7 @@ class MWebAuthHook:
     @classmethod
     def auth_rest_acl_interceptor(cls) -> MWebAuthRestAclInterceptor | None:
         return cls.get_hook('AUTH_REST_ACL_INTERCEPTOR', MWebAuthRestAclInterceptor)
+
+    @classmethod
+    def auth_interceptor(cls) -> MWebAuthBaseInterceptor | None:
+        return cls.get_hook('AUTH_INTERCEPTOR', MWebAuthBaseInterceptor)
