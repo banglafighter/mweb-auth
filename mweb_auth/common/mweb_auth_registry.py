@@ -16,7 +16,7 @@ class MWebAuthRegistry:
         MWebAuthRegistry.SKIP_EXACT_URLS[tenant].append(url)
 
     @staticmethod
-    def add_skip_prefixe_url(url: str, tenant: str = "default"):
+    def add_skip_prefix_url(url: str, tenant: str = "default"):
         MWebAuthRegistry._init_skip_url_list(tenant=tenant)
         MWebAuthRegistry.SKIP_PREFIXES[tenant].append(url)
 

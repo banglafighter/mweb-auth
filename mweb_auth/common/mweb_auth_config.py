@@ -15,6 +15,13 @@ class MWebAuthConfig:
     # Messages
     NOT_AUTHORIZED_MSG = "You are not authorized to access this resource"
     AUTHENTICATION_FAILED_MSG = "Authentication Failed"
+    INVALID_OPERATOR_MSG = "Missing or invalid operator information"
+    PASSWORD_MISMATCH_ERROR_MSG = "New password and confirm password do not match"
+    DATA_VALIDATION_ERROR_MSG = "Data validation error!"
+    USERNAME_MIN_LENGTH_ERROR_MSG = "Username must be at least {} characters long"
+    USERNAME_MAX_LENGTH_ERROR_MSG = "Username must be at most {} characters long"
+    USERNAME_INVALID_CHAR_ERROR_MSG = "Username can only contain lowercase letters (a–z), numbers (0–9), dots (.), and hyphens (-)"
+    PASSWORD_MIN_LENGTH_ERROR_MSG = "Password must be at least {} characters long"
 
     # Configuration
     SKIP_EXACT_URLS_FROM_AUTH: list = []
