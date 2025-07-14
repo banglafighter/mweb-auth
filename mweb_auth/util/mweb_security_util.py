@@ -1,7 +1,6 @@
 import re
 import bcrypt
 from mw_common import DataUtil
-from mweb_auth.common.mweb_auth_config import MWebAuthConfig
 from mweb_crud.common import MWebCRUDException
 
 
@@ -30,6 +29,8 @@ class MWebSecurityUtil:
 
     @staticmethod
     def validate_password_match(data: dict, new_pass_key="newPassword", confirm_pass_key="confirmPassword", raise_error=True, error_message: str | None = None):
+        from mweb_auth.common.mweb_auth_config import MWebAuthConfig
+
         if not error_message:
             error_message = MWebAuthConfig.PASSWORD_MISMATCH_ERROR_MSG
 
@@ -43,6 +44,8 @@ class MWebSecurityUtil:
 
     @staticmethod
     def validate_username(data: dict, min_length: int | None = None, max_length: int | None = None, raise_error=True) -> bool | str:
+        from mweb_auth.common.mweb_auth_config import MWebAuthConfig
+
         username = DataUtil.dict_value(data=data, key="username")
         if not username:
             return False
@@ -72,6 +75,8 @@ class MWebSecurityUtil:
 
     @staticmethod
     def validate_password(data: dict, min_length: int | None = None, raise_error=True, dict_key: str | None = None) -> bool | str:
+        from mweb_auth.common.mweb_auth_config import MWebAuthConfig
+
         if not dict_key:
             dict_key = "password"
 

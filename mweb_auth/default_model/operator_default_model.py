@@ -1,4 +1,3 @@
-from mweb_auth.util import MWebSecurityUtil
 from mweb_orm import MWebModel, MWebDatedModel
 from mweb_orm.orm import mweb_orm
 
@@ -17,9 +16,11 @@ class OperatorDefaultBase(MWebModel):
 
     @password.setter
     def password(self, password):
+        from mweb_auth.util import MWebSecurityUtil
         self.password_hash = MWebSecurityUtil.hash_password(password)
 
     def verify_password(self, password) -> bool:
+        from mweb_auth.util import MWebSecurityUtil
         return MWebSecurityUtil.validate_password(password, self.password_hash)
 
 
