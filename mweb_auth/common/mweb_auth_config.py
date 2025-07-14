@@ -1,4 +1,10 @@
+from mweb_auth.default_model import OperatorDefaultBase, OperatorTokenDefault
+
+
 class MWebAuthConfig:
+    OPERATOR_MODEL: OperatorDefaultBase = None
+    OPERATOR_TOKEN_MODEL: OperatorTokenDefault = None
+
     # JWT
     JWT_SECRET: str = "PleaseChangeTheToken"
     JWT_REFRESH_TOKEN_VALIDITY_MIN: int = 45

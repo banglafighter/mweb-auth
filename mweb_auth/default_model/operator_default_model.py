@@ -1,5 +1,5 @@
 from mweb_auth.util import MWebSecurityUtil
-from mweb_orm import MWebModel
+from mweb_orm import MWebModel, MWebDatedModel
 from mweb_orm.orm import mweb_orm
 
 
@@ -32,3 +32,10 @@ class OperatorDefault(OperatorDefaultBase):
     accessType = mweb_orm.Column("access_type", mweb_orm.String(25), default="Operator")
     profilePhoto = mweb_orm.Column("profile_photo", mweb_orm.String(200))
     coverPhoto = mweb_orm.Column("cover_photo", mweb_orm.String(200))
+
+
+class OperatorTokenDefault(MWebDatedModel):
+    __abstract__ = True
+    token = mweb_orm.Column("token", mweb_orm.String(350), nullable=False)
+    name = mweb_orm.Column("name", mweb_orm.String(25))
+    tokenOwnerId = mweb_orm.Column("token_owner_id", mweb_orm.BigInteger(), nullable=False)
