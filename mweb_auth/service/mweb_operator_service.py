@@ -82,3 +82,19 @@ class MWebOperatorService:
         if notify_on_login_success:
             await notify_on_login_success.notify(operator=operator, login_data=login_data)
         return operator
+
+    async def is_username_available(self, username: str, model_id: int = None):
+        operator = await self.operator.query.where(self.operator.username == username).first()
+        if operator:
+            if model_id and operator.id == model_id:
+                return True
+            return False
+        return True
+
+    async def is_email_available(self, email: str, model_id: int = None):
+        operator = await self.operator.query.where(self.operator.email == email).first()
+        if operator:
+            if model_id and operator.id == model_id:
+                return True
+            return False
+        return True
