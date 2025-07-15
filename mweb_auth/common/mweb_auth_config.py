@@ -1,10 +1,7 @@
-from mweb_auth.default_model import OperatorDefaultBase, OperatorTokenDefault
+from mweb_auth.data.mweb_auth_enum import AuthBase
 
 
 class MWebAuthConfig:
-    OPERATOR_MODEL: OperatorDefaultBase = None
-    OPERATOR_TOKEN_MODEL: OperatorTokenDefault = None
-
     # JWT
     JWT_SECRET: str = "PleaseChangeTheToken"
     JWT_REFRESH_TOKEN_VALIDITY_MIN: int = 45
@@ -13,6 +10,8 @@ class MWebAuthConfig:
 
     # Authentication
     ENABLE_AUTH: bool = True
+    SYSTEM_AUTH_BASE: AuthBase = AuthBase.USERNAME
+    REFRESH_TOKEN_NAME = "REFRESH_TOKEN"
 
     # URL Specification
     REST_URL_START_WITH = "/api"
@@ -28,6 +27,10 @@ class MWebAuthConfig:
     USERNAME_MAX_LENGTH_ERROR_MSG = "Username must be at most {} characters long"
     USERNAME_INVALID_CHAR_ERROR_MSG = "Username can only contain lowercase letters (a–z), numbers (0–9), dots (.), and hyphens (-)"
     PASSWORD_MIN_LENGTH_ERROR_MSG = "Password must be at least {} characters long"
+    OPERATOR_NOT_FOUND_MSG = "Operator not found"
+    OPERATOR_TOKEN_NOT_FOUND_MSG = "Operator token not found"
+    ACCOUNT_NOT_VERIFIED_MSG = "Sorry, your account has not been verified yet."
+    INVALID_CREDENTIALS_MSG = "Invalid credentials. Please enter valid login details."
 
     # Configuration
     SKIP_EXACT_URLS_FROM_AUTH: list = []

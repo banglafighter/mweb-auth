@@ -1,21 +1,41 @@
-from mweb import MWebBase, MWebConfig
+from mweb import MWebBase, MWebConfig, MWebSystemConfig
 from mweb.engine.mweb_hook import MWebHook
 from mweb.engine.mweb_util import MWebUtil
-from mweb_auth.common.mweb_auth_config import MWebAuthConfig
-from mweb_auth.common.mweb_auth_hook import MWebAuthHook
 from mweb_auth.common.mweb_auth_registry import MWebAuthRegistry
+from mweb_auth.default_dto.mweb_auth_dtos import MWebAuthDTOs
+from mweb_auth.default_model import MWebAuthModels
 from mweb_auth.security.mweb_auth_interceptor import MWebAuthInterceptor
 
 
 class MWebAuthModule:
 
-    def register(self, mweb_app: MWebBase, config: MWebConfig, hook: MWebHook):
-        MWebUtil.copy_config_property(source=config, destination=MWebAuthConfig)
+    def merge_system_config(self, system_config: MWebSystemConfig):
+        from mweb_auth.common.mweb_auth_sys_conf import MWebAuthSysConf
+        MWebUtil.copy_config_property(source=system_config, destination=MWebAuthSysConf)
+
+    def merge_hook(self, hook: MWebHook):
+        from mweb_auth.common.mweb_auth_hook import MWebAuthHook
         MWebUtil.copy_config_property(source=hook, destination=MWebAuthHook)
+
+    def merge_config(self, config: MWebConfig):
+        from mweb_auth.common.mweb_auth_config import MWebAuthConfig
+        MWebUtil.copy_config_property(source=config, destination=MWebAuthConfig)
+
+    def register(self, mweb_app: MWebBase, config: MWebConfig, hook: MWebHook, system_config: MWebSystemConfig):
+        self.merge_system_config(system_config=system_config)
+        self.merge_config(config=config)
+        self.merge_hook(hook=hook)
+
+        # Initialize Model
+        MWebAuthModels.init_models()
+        MWebAuthDTOs.init_dtos()
 
         self.register_auth_interceptor(mweb_app=mweb_app)
 
     def register_auth_interceptor(self, mweb_app: MWebBase):
+        from mweb_auth.common.mweb_auth_config import MWebAuthConfig
+        from mweb_auth.common.mweb_auth_hook import MWebAuthHook
+
         if not MWebAuthConfig.ENABLE_AUTH or not mweb_app:
             return
 

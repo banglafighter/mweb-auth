@@ -9,3 +9,8 @@ class OperatorStatus(BaseEnum):
 class OperatorAccessType(BaseEnum):
     Operator = "Operator"
     Admin = "Admin"
+
+
+class AuthBase(BaseEnum):
+    EMAIL = "EMAIL"
+    USERNAME = "USERNAME"
