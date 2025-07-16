@@ -32,12 +32,12 @@ class MWebAPIOperatorService:
         return await self.crud_manager.get_first(query=query, raise_error=raise_error, message=MWebAuthConfig.OPERATOR_TOKEN_NOT_FOUND_MSG)
 
     async def create_or_update_db_refresh_token(self, operator_id, uuid=None) -> OperatorTokenDefault | None:
-        existing_token = self.get_operator_token_by_operator_id(operator_id)
+        existing_token = await self.get_operator_token_by_operator_id(operator_id, raise_error=False)
         if uuid and (not existing_token or existing_token.token != uuid):
             return None
 
         if not existing_token:
-            existing_token = self.operator_token(name=MWebAuthConfig.REFRESH_TOKEN_NAME, tokenOwnerId=operator_id)
+            existing_token = self.operator_token( tokenOwnerId=operator_id)
 
         existing_token.token = MwUtil.uuid()
         await existing_token.save()
@@ -86,7 +86,7 @@ class MWebAPIOperatorService:
         if response_dto:
             response_dict = response_dto.dump(response)
         else:
-            response_dict = MWebAuthDTOs.login_response_dto().dump(response)
+            response_dict = MWebAuthDTOs.login_response_dto(model=response)
 
         on_token_generation = MWebAuthHook.token_generation_interceptor()
         if on_token_generation:

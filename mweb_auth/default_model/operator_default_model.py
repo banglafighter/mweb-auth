@@ -21,7 +21,7 @@ class OperatorDefaultBase(MWebModel):
 
     def verify_password(self, password) -> bool:
         from mweb_auth.util import MWebSecurityUtil
-        return MWebSecurityUtil.validate_password(password, self.password_hash)
+        return MWebSecurityUtil.verify_password_hash(password, self.password_hash)
 
 
 class OperatorDefault(OperatorDefaultBase):
@@ -37,6 +37,6 @@ class OperatorDefault(OperatorDefaultBase):
 
 class OperatorTokenDefault(MWebDatedModel):
     __abstract__ = True
-    token = mweb_orm.Column("token", mweb_orm.String(350), nullable=False)
-    name = mweb_orm.Column("name", mweb_orm.String(25))
-    tokenOwnerId = mweb_orm.Column("token_owner_id", mweb_orm.BigInteger(), nullable=False)
+    token: str = mweb_orm.Column("token", mweb_orm.String(350), nullable=False, init=False)
+    name: str = mweb_orm.Column("name", mweb_orm.String(25))
+    tokenOwnerId: int = mweb_orm.Column("token_owner_id", mweb_orm.BigInteger(), nullable=False)

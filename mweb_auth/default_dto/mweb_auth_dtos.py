@@ -7,8 +7,8 @@ class MWebAuthDTOs:
     _login_response_dto: type[MWebBaseDTO] = None
 
     @classmethod
-    def login_response_dto(cls):
-        return cls._login_response_dto
+    def login_response_dto(cls, model):
+        return cls._login_response_dto().to_dict(model=model)
 
     @classmethod
     def init_dtos(cls):

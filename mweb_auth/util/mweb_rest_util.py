@@ -6,12 +6,8 @@ from mweb_crud.crud import RequestContext
 
 
 class MWebRESTUtil:
-    _request_context: RequestContext = None
-    _mweb_jwt: MWebJWT = None
-
-    def __init__(self):
-        self._request_context = RequestContext()
-        self._mweb_jwt = MWebJWT()
+    _request_context: RequestContext = RequestContext()
+    _mweb_jwt: MWebJWT = MWebJWT()
 
     @classmethod
     def extract_auth_payload(cls):

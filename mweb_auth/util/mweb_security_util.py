@@ -18,7 +18,7 @@ class MWebSecurityUtil:
         return hashed
 
     @staticmethod
-    def verify_password(password, hashed):
+    def verify_password_hash(password, hashed):
         if password:
             password = password.encode('utf8')
         if hashed and isinstance(hashed, str):
