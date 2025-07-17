@@ -1,12 +1,15 @@
-from mw_common import MwUtil
+from mw_common import MwUtil, DataUtil
 from mweb.saas.mweb_saas import MWebSaaS, MWebSaaSConst
 from mweb_auth.common.mweb_auth_config import MWebAuthConfig
 from mweb_auth.common.mweb_auth_hook import MWebAuthHook
+from mweb_auth.default_dto import RefreshTokenDefaultDTO
 from mweb_auth.default_dto.mweb_auth_dtos import MWebAuthDTOs
 from mweb_auth.default_model import OperatorTokenDefault, MWebAuthModels
 from mweb_auth.security.mweb_jwt import MWebJWT
 from mweb_auth.service import MWebOperatorService
+from mweb_crud.common import MWebCRUDException
 from mweb_crud.crud import CRUDManager
+from mweb_crud.randr import MWebRESTResponseCode
 
 
 class MWebAPIOperatorService:
@@ -94,3 +97,38 @@ class MWebAPIOperatorService:
             if response:
                 return response
         return response_dict
+
+    async def refresh_token(self):
+        data = await self.crud_manager.request.get_data(validator=RefreshTokenDefaultDTO())
+        refresh_token = DataUtil.dict_value(data=data, key="refreshToken")
+        return await self.access_token_by_refresh_token(refresh_token=refresh_token)
+
+
+    async def access_token_by_refresh_token(self, refresh_token):
+        jwt_payload = self.mweb_jwt.validate_token(token=refresh_token)
+        operator_id = DataUtil.dict_value(jwt_payload, self.OPERATOR)
+        token = DataUtil.dict_value(jwt_payload, self.TOKEN)
+        if not jwt_payload or not operator_id or not token:
+            raise MWebCRUDException(message=MWebAuthConfig.INVALID_TOKEN_MSG, error_code=MWebRESTResponseCode.invalid_token_code)
+
+        operator_token = await self.get_operator_token_by_token(token=token, raise_error=False)
+        if not operator_token:
+            raise MWebCRUDException(message=MWebAuthConfig.TOKEN_EXPIRED_MSG, error_code=MWebRESTResponseCode.token_expired_code)
+
+        access_token = await self.get_access_token(operator_id=operator_id)
+        refresh_token = await self.get_refresh_token(operator_id=operator_id)
+        if not access_token or not refresh_token:
+            raise MWebCRUDException(message=MWebAuthConfig.TOKEN_GENERATION_ERROR_MSG, error_code=MWebRESTResponseCode.token_error_code)
+
+        token = {
+            "accessToken": access_token,
+            "refreshToken": refresh_token
+        }
+
+        on_renew_token = MWebAuthHook.token_renewal_interceptor()
+        if on_renew_token is not None:
+            response = await on_renew_token.intercept(token=token, jwt_payload=jwt_payload)
+            if response:
+                return response
+
+        return await self.crud_manager.response.success(content=token)

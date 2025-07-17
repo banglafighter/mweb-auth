@@ -31,7 +31,7 @@ class MWebTokenGenerationInterceptor(ABC):
 class MWebTokenRenewalInterceptor(ABC):
 
     @abstractmethod
-    async def perform(self, token: dict, jwt_payload: dict) -> dict: ...
+    async def intercept(self, token: dict, jwt_payload: dict) -> dict: ...
 
 
 class MWebForgotPasswordRequestNotifier(ABC):

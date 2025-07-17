@@ -32,6 +32,10 @@ class MWebAuthConfig:
     ACCOUNT_NOT_VERIFIED_MSG = "Sorry, your account has not been verified yet."
     INVALID_CREDENTIALS_MSG = "Invalid credentials. Please enter valid login details."
 
+    INVALID_TOKEN_MSG = "The provided token is invalid."
+    TOKEN_EXPIRED_MSG = "Your session has expired. Please log in again."
+    TOKEN_GENERATION_ERROR_MSG = "An error occurred while generating the token. Please try again."
+
     # Configuration
     SKIP_EXACT_URLS_FROM_AUTH: list = []
     SKIP_PREFIXES_URL_FROM_AUTH: list = []
