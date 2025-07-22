@@ -80,9 +80,14 @@ class MWebAuthInterceptor(MWebAuthBaseInterceptor):
 
     async def check_auth(self):
         if self.is_rest_request():
+            if not MWebAuthConfig.ENABLE_API_AUTH:
+                return None
             return await self.check_rest_auth()
         elif self.is_assets_request():
             return await self.check_rest_auth(is_assets_request=True)
+        else:
+            if not MWebAuthConfig.ENABLE_NONE_API_AUTH:
+                return None
 
         return await self.get_error_response(message=MWebAuthConfig.AUTHENTICATION_FAILED_MSG)
 
