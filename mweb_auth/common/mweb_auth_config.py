@@ -1,11 +1,12 @@
 from mweb_auth.data.mweb_auth_enum import AuthBase
+from mweb import MWebConfig
 
 
-class MWebAuthConfig:
+class MWebAuthConfig(MWebConfig):
     # JWT
     JWT_SECRET: str = "PleaseChangeTheToken"
-    JWT_REFRESH_TOKEN_VALIDITY_MIN: int = 45
-    JWT_ACCESS_TOKEN_VALIDITY_MIN: int = 30
+    JWT_REFRESH_TOKEN_VALIDITY_MIN: int = (60 * 24 + 6)
+    JWT_ACCESS_TOKEN_VALIDITY_MIN: int = (60 * 24)
     RESET_PASSWORD_TOKEN_VALID_MIN: int = 150
 
     # Authentication
