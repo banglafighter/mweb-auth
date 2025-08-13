@@ -28,6 +28,11 @@ class MWebTokenGenerationInterceptor(ABC):
     async def intercept(self, response: dict, operator: OperatorDefault): ...
 
 
+class MWebTokenPayloadInterceptor(ABC):
+    @abstractmethod
+    async def intercept(self, payload: dict, payload_type: str, operator: OperatorDefault) -> dict: ...
+
+
 class MWebTokenRenewalInterceptor(ABC):
 
     @abstractmethod

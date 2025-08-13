@@ -4,7 +4,7 @@ from mweb_auth.common.mweb_auth_config import MWebAuthConfig
 from mweb_auth.common.mweb_auth_hook import MWebAuthHook
 from mweb_auth.default_dto import RefreshTokenDefaultDTO
 from mweb_auth.default_dto.mweb_auth_dtos import MWebAuthDTOs
-from mweb_auth.default_model import OperatorTokenDefault, MWebAuthModels
+from mweb_auth.default_model import OperatorTokenDefault, MWebAuthModels, OperatorDefault
 from mweb_auth.security.mweb_jwt import MWebJWT
 from mweb_auth.service import MWebOperatorService
 from mweb_crud.common import MWebCRUDException
@@ -57,7 +57,16 @@ class MWebAPIOperatorService:
         tkey = MWebSaaS.get_tenant_key()
         if tkey:
             payload[MWebSaaSConst.TENANT_KEY] = tkey
+        payload = await self.perform_token_payload_interception(payload=payload, payload_type="accessToken", operator=operator)
         return self.mweb_jwt.get_access_token(payload, iss=operator.uuid)
+
+    async def perform_token_payload_interception(self, payload: dict, payload_type: str, operator) -> dict:
+        token_payload_interceptor = MWebAuthHook.token_payload_interceptor()
+        if token_payload_interceptor:
+            response = await token_payload_interceptor.intercept(payload_type=payload_type, operator=operator, payload=payload)
+            if response:
+                return response
+        return payload
 
     async def get_refresh_token(self, operator_id, payload: dict = None):
         operator = await self.mweb_operator_service.get_operator_by_id(operator_id)
@@ -75,6 +84,7 @@ class MWebAPIOperatorService:
         tkey = MWebSaaS.get_tenant_key()
         if tkey:
             payload[MWebSaaSConst.TENANT_KEY] = tkey
+        payload = await self.perform_token_payload_interception(payload=payload, payload_type="refreshToken", operator=operator)
         return self.mweb_jwt.get_refresh_token(payload, iss=operator.uuid)
 
     async def process_login_data(self, operator, response_dto=None):

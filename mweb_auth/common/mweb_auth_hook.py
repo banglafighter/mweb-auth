@@ -4,6 +4,7 @@ from mweb_auth.connect import MWebAuthSkipURLChecker, MWebAuthRestAclInterceptor
     MWebForgotPasswordRequestNotifier, MWebResetPasswordFailureNotifier, MWebResetPasswordSuccessNotifier, \
     MWebLoginFailureNotifier, MWebLoginSuccessNotifier, MWebOperatorCreationNotifier
 from mweb_auth.connect.mweb_auth_base_interceptor import MWebAuthBaseInterceptor
+from mweb_auth.connect.mweb_auth_connector import MWebTokenPayloadInterceptor
 
 T = TypeVar('T')
 
@@ -18,6 +19,7 @@ class MWebAuthHook:
     CUSTOM_LOGIN_HANDLER: MWebCustomLoginHandler = None
     TOKEN_GENERATION_INTERCEPTOR: MWebTokenGenerationInterceptor = None
     TOKEN_RENEWAL_INTERCEPTOR: MWebTokenRenewalInterceptor = None
+    TOKEN_PAYLOAD_INTERCEPTOR: MWebTokenPayloadInterceptor = None
 
     # Auth Notifications
     FORGOT_PASSWORD_REQUEST_NOTIFIER: MWebForgotPasswordRequestNotifier = None
@@ -31,9 +33,13 @@ class MWebAuthHook:
     def get_hook(cls, hook_name: str, hook_type: Type[T], default=None) -> T | None:
         if hasattr(cls, hook_name):
             hook = getattr(cls, hook_name)
-            if hook is None and isinstance(default, hook_type):
+            if hook is not None and isinstance(hook, hook_type):
                 return cast(T, getattr(cls, hook_name))
         return default
+
+    @classmethod
+    def token_payload_interceptor(cls) -> MWebTokenPayloadInterceptor | None:
+        return cls.get_hook('TOKEN_PAYLOAD_INTERCEPTOR', MWebTokenPayloadInterceptor)
 
     @classmethod
     def auth_skip_url_checker(cls) -> MWebAuthSkipURLChecker | None:
