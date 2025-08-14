@@ -5,7 +5,7 @@ from mweb_crud.common import MWebCRUDException
 from mweb_crud.crud import RequestContext
 
 
-class MWebRESTUtil:
+class MWebAuthUtil:
     _request_context: RequestContext = RequestContext()
     _mweb_jwt: MWebJWT = MWebJWT()
 
