@@ -99,3 +99,15 @@ class MWebSecurityUtil:
         if not message:
             return True
         return message
+
+    @classmethod
+    def is_valid_local_bd_mobile(cls, data: dict, field_name="mobile", error_message=None) -> bool:
+        if not error_message:
+            error_message = "Invalid mobile number"
+
+        mobile = DataUtil.dict_value(data=data, key=field_name)
+        bd_local_mobile_regex = re.compile(r"^01[3-9]\d{8}$")
+        is_valid_mobile = bool(bd_local_mobile_regex.match(mobile.strip()))
+        if is_valid_mobile:
+            return True
+        raise MWebCRUDException(message=error_message, details={field_name: error_message})
