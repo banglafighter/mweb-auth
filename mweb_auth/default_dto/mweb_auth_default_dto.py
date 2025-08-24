@@ -1,6 +1,6 @@
 from mweb_auth.data.mweb_auth_enum import OperatorStatus, OperatorAccessType
 from mweb_auth.util import MWebSecurityUtil
-from mweb_crud.data_transfer import MWebBaseDTO, dto, validates_schema
+from mweb_crud.data_transfer import MWebBaseDTO, dto, validates_schema, MWebDTO
 
 
 class LoginTokenDefaultDTO(MWebBaseDTO):
@@ -8,7 +8,7 @@ class LoginTokenDefaultDTO(MWebBaseDTO):
     refreshToken = dto.String(dump_only=True)
 
 
-class OperatorReadDefaultDTO(MWebBaseDTO):
+class OperatorReadDefaultDTO(MWebDTO):
     name = dto.String(required=True, error_messages={"required": "Please enter name"})
     email = dto.Email(required=True, error_messages={"required": "Please enter email."})
     username = dto.String(required=True, error_messages={"required": "Please enter username."})
