@@ -1,2 +1,3 @@
 from .mweb_auth_sys_conf import MWebAuthSysConf
 from .mweb_auth_config import MWebAuthConfig
+from .mweb_auth_registry import MWebAuthRegistry
