@@ -73,8 +73,9 @@ class MWebSecurityUtil:
             return True
         return message
 
+
     @staticmethod
-    def validate_password(data: dict, min_length: int | None = None, raise_error=True, dict_key: str | None = None) -> bool | str:
+    def validate_password(data: dict, min_length: int | None = None, raise_error=True, dict_key: str | None = None, forbidden_words: list = None, basic_check: bool = False) -> bool | str:
         from mweb_auth.common.mweb_auth_config import MWebAuthConfig
 
         if not dict_key:
@@ -92,6 +93,22 @@ class MWebSecurityUtil:
 
         if password_length < min_length:
             message = MWebAuthConfig.PASSWORD_MIN_LENGTH_ERROR_MSG.format(min_length)
+
+        if not forbidden_words:
+            forbidden_words = []
+
+        if basic_check:
+            # 123456 or 0123456 etc. not allowed
+            number_password = ""
+            zero_number_password = ""
+            for index in range(len(password)):
+                number_password += f"{index + 1}"
+                zero_number_password += f"{index}"
+            forbidden_words.append(number_password)
+            forbidden_words.append(zero_number_password)
+
+        if password.lower() in forbidden_words:
+            message = MWebAuthConfig.GENERIC_PASSWORD_ERROR_MSG
 
         if message and raise_error:
             raise MWebCRUDException(message=MWebAuthConfig.DATA_VALIDATION_ERROR_MSG, details={"password": message})

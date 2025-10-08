@@ -30,6 +30,7 @@ class MWebAuthConfig(MWebConfig):
     USERNAME_MAX_LENGTH_ERROR_MSG = "Username must be at most {} characters long"
     USERNAME_INVALID_CHAR_ERROR_MSG = "Username can only contain lowercase letters (a–z), numbers (0–9), dots (.), and hyphens (-)"
     PASSWORD_MIN_LENGTH_ERROR_MSG = "Password must be at least {} characters long"
+    GENERIC_PASSWORD_ERROR_MSG = "Generic password not allowed"
     OPERATOR_NOT_FOUND_MSG = "Operator not found"
     OPERATOR_TOKEN_NOT_FOUND_MSG = "Operator token not found"
     ACCOUNT_NOT_VERIFIED_MSG = "Sorry, your account has not been verified yet."
