@@ -31,13 +31,13 @@ class MWebAuthInterceptor(MWebAuthBaseInterceptor):
                 return True
         return False
 
-    def is_url_skipped(self, tenant: str = "default") -> bool:
+    async def is_url_skipped(self, tenant: str = "default") -> bool:
         relative_url = self.get_relative_url()
         skip_exact_urls = MWebAuthRegistry.get_skip_exact_urls(tenant=tenant)
         skip_url_prefixes = MWebAuthRegistry.get_skip_prefixes(tenant=tenant)
         checker = MWebAuthHook.auth_skip_url_checker()
         if checker is not None:
-            return checker.check(relative_url=relative_url, skip_exact_urls=skip_exact_urls, skip_prefixes=skip_url_prefixes)
+            return await checker.check(relative_url=relative_url, skip_exact_urls=skip_exact_urls, skip_prefixes=skip_url_prefixes)
         if relative_url in skip_exact_urls or self.check_skip_url_prefixes(relative_url, url_list=skip_url_prefixes):
             return True
         return False
@@ -97,6 +97,6 @@ class MWebAuthInterceptor(MWebAuthBaseInterceptor):
         if self._request_url_info.method == 'OPTIONS':
             return await self._response_maker.success(content="Allowed")
 
-        if not self.is_url_skipped():
+        if not await self.is_url_skipped():
             return await self.check_auth()
         return None
