@@ -87,10 +87,10 @@ class MWebAPIOperatorService:
         payload = await self.perform_token_payload_interception(payload=payload, payload_type="refreshToken", operator=operator)
         return self.mweb_jwt.get_refresh_token(payload, iss=operator.uuid)
 
-    async def process_login_data(self, operator, response_dto=None):
+    async def process_login_data(self, operator, response_dto=None, access_token_payload: dict = None, refresh_token_payload: dict = None):
         token = {
-            "accessToken": await self.get_access_token(operator_id=operator.id),
-            "refreshToken": await self.get_refresh_token(operator_id=operator.id)
+            "accessToken": await self.get_access_token(operator_id=operator.id, payload=access_token_payload),
+            "refreshToken": await self.get_refresh_token(operator_id=operator.id, payload=refresh_token_payload)
         }
         response = {
             "operator": operator,
