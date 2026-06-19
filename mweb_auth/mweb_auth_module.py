@@ -1,10 +1,8 @@
-from mweb import MWebBase, MWebConfig, MWebSystemConfig
-from mweb.engine.mweb_hook import MWebHook
-from mweb.engine.mweb_util import MWebUtil
-from mweb_auth.common.mweb_auth_registry import MWebAuthRegistry
-from mweb_auth.default_dto.mweb_auth_dtos import MWebAuthDTOs
-from mweb_auth.default_model import MWebAuthModels
-from mweb_auth.security.mweb_auth_interceptor import MWebAuthInterceptor
+from mweb import MWebBase, MWebConfig, MWebSystemConfig, MWebHook, MWebUtil
+from .common.mweb_auth_registry import MWebAuthRegistry
+from .default_dto.mweb_auth_dtos import MWebAuthDTOs
+from .default_model import MWebAuthModels
+from .security.mweb_auth_interceptor import MWebAuthInterceptor
 
 
 class MWebAuthModule:
