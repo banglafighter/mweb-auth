@@ -1,3 +1,5 @@
+from mweb_auth.common import MWebAuthConfig
+
 from mweb import MWebBase, MWebConfig, MWebSystemConfig, MWebHook, MWebUtil
 from .common.mweb_auth_registry import MWebAuthRegistry
 from .default_dto.mweb_auth_dtos import MWebAuthDTOs
@@ -25,8 +27,9 @@ class MWebAuthModule:
         self.merge_hook(hook=hook)
 
         # Initialize Model
-        MWebAuthModels.init_models()
-        MWebAuthDTOs.init_dtos()
+        if MWebAuthConfig.ENABLE_AUTH_CRUD:
+            MWebAuthModels.init_models()
+            MWebAuthDTOs.init_dtos()
 
         self.register_auth_interceptor(mweb_app=mweb_app)
 

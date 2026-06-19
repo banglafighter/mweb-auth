@@ -13,6 +13,7 @@ class MWebAuthConfig(MWebConfig):
     ENABLE_AUTH: bool = True
     ENABLE_API_AUTH: bool = True
     ENABLE_NONE_API_AUTH: bool = True
+    ENABLE_AUTH_CRUD: bool = True
     SYSTEM_AUTH_BASE: AuthBase = AuthBase.USERNAME
     REFRESH_TOKEN_NAME = "REFRESH_TOKEN"
 
