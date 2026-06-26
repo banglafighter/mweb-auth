@@ -1,5 +1,5 @@
 from mw_common import MwUtil, DataUtil
-from mweb.saas.mweb_saas import MWebSaaS, MWebSaaSConst
+from mweb import MWebSaaS, MWebSaaSConst
 from mweb_auth.common.mweb_auth_config import MWebAuthConfig
 from mweb_auth.common.mweb_auth_hook import MWebAuthHook
 from mweb_auth.default_dto import RefreshTokenDefaultDTO

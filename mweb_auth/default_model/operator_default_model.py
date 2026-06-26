@@ -1,5 +1,4 @@
-from mweb_orm import MWebModel, MWebDatedModel
-from mweb_orm.orm import mweb_orm
+from mweb_orm import MWebModel, MWebDatedModel, mweb_orm
 
 
 class OperatorDefaultBase(MWebModel):
